@@ -1,9 +1,14 @@
 package com.neat.activity;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -11,18 +16,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.neat.entities.NotesDO;
+import com.neat.provider.NeatDataContentProvider;
+
+import org.chalup.microorm.MicroOrm;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class NotesListActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     private RecyclerView mRecyclerView;
     private NotesAdapter mAdapter;
+    private List<NotesDO> notesDOList;
+
+    private int LOADER_ID = 1201;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +53,8 @@ public class NotesListActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-        mAdapter = new NotesAdapter();
+        notesDOList = new ArrayList<>();
+        mAdapter = new NotesAdapter(notesDOList);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -63,28 +79,6 @@ public class NotesListActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.notes_list, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -100,8 +94,61 @@ public class NotesListActivity extends AppCompatActivity
         return true;
     }
 
-    private class NotesAdapter extends RecyclerView.Adapter<NotesViewHolder> {
+    private void startNotesLoader(final boolean reset) {
+        if (reset) {
+            getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
+        } else {
+            getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+        }
+    }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String[] projection = null;
+        String selection = null;
+        String sortOrder = null;
+        String[] selectionArgs = null;
+        Uri uri = NeatDataContentProvider.NOTES_URI;
+
+        selection = NotesDO.NotesDetailsCoulumns.SOFT_DELETED + " = ? ";
+        selectionArgs = new String[]{
+                String.valueOf(0)
+        };
+        return new CursorLoader(NotesListActivity.this, uri, projection, selection, selectionArgs, sortOrder);
+
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        if (cursor != null) {
+            MicroOrm orm = new MicroOrm();
+            try {
+                cursor.moveToFirst();
+                int rows = cursor.getCount();
+                notesDOList.clear();
+                do {
+                    NotesDO item = orm.fromCursor(cursor, NotesDO.class);
+                    notesDOList.add(item);
+                } while (cursor.moveToNext());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            cursor.close();
+        }
+        mAdapter.mList = notesDOList;
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
+
+    private class NotesAdapter extends RecyclerView.Adapter<NotesViewHolder> {
+        private List<NotesDO> mList;
+        NotesAdapter(List<NotesDO> notes) {
+            mList = notes;
+        }
         @Override
         public NotesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return null;
