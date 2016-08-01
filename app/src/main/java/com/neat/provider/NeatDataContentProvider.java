@@ -84,6 +84,10 @@ public class NeatDataContentProvider extends SQLiteContentProvider {
         String tableName = null;
 
         switch (uriMatcher.match(uri)) {
+            case NOTES_MATCH:
+                tableName = NotesDO.TABLE_NAME;
+                selectionLocal = selection;
+                break;
         }
         count = db.update(tableName, values, selectionLocal, selectionArgs);
         postNotifyUri(uri);

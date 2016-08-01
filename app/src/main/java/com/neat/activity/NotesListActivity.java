@@ -12,7 +12,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,13 +31,15 @@ import org.chalup.microorm.MicroOrm;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NotesListActivity extends AppCompatActivity
+public class NotesListActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, LoaderManager.LoaderCallbacks<Cursor> {
 
     private RecyclerView mRecyclerView;
     private NotesAdapter mAdapter;
     private List<NotesDO> mNotesDOList;
     private TextView mEmptyView;
+
+    public static final String NOTE_EXTRA = "noteDO";
 
     private int LOADER_ID = 1201;
     @Override
@@ -209,7 +210,7 @@ public class NotesListActivity extends AppCompatActivity
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(NotesListActivity.this, AddEditNoteActivity.class);
-                    intent.putExtra("noteDO", notesDO);
+                    intent.putExtra(NOTE_EXTRA, notesDO);
                     startActivity(intent);
                 }
             });

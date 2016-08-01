@@ -18,7 +18,8 @@ public class NotesDO extends BaseEntity implements BaseColumns, Parcelable{
     public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.neat." + TABLE_NAME;
     public static final Uri CONTENT_URI = NeatDataContentProvider.BASE_CONTENT_URI.buildUpon().appendPath(PATH).build();
 
-
+    @Column("_id")
+    private Integer id;
     @Column("title")
     private String title;
     @Column("text")
@@ -28,6 +29,14 @@ public class NotesDO extends BaseEntity implements BaseColumns, Parcelable{
 
     public NotesDO() {
 
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Boolean getSoftDeleted() {
@@ -55,6 +64,7 @@ public class NotesDO extends BaseEntity implements BaseColumns, Parcelable{
     }
 
     public NotesDO(Parcel in) {
+        id = in.readInt();
         title = in.readString();
         text = in.readString();
     }
@@ -83,6 +93,8 @@ public class NotesDO extends BaseEntity implements BaseColumns, Parcelable{
     @Override
     public Object get(String value) {
         switch (notesDetailsColumnsMap.indexOfValue(value)) {
+            case 0:
+                return id;
             case 1:
                 return title;
             case 2:
@@ -101,6 +113,7 @@ public class NotesDO extends BaseEntity implements BaseColumns, Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
         parcel.writeString(title);
         parcel.writeString(text);
     }

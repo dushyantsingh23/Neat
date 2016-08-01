@@ -9,7 +9,7 @@
     <string name="title_hint">Enter Title Here</string>
     <string name="text_hint">Enter Note</string>
     <string name="title_main_activity">Neat</string>
-    <string name="title_add_new_notes_activity">Add Note</string>
+    <string name="title_add_new_notes_activity">Add/Edit Note</string>
     <string name="text_about">Created by Dushyant</string>
     <string name="no_notes">No Notes Available</string>
     <string name="save">Save Note</string>

@@ -23,23 +23,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:maxLength="2"
-            android:paddingLeft="@dimen/default_padding_bottom"
-            android:paddingRight="@dimen/default_padding_bottom"
+            android:maxLines="2"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingRight="10dp"
             android:text="title"
             android:textColor="@color/accent"
             android:textSize="16sp"
             android:textStyle="bold" />
 
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/divider"
+            android:layout_marginLeft="@dimen/default_padding_bottom"
+            android:layout_marginRight="@dimen/default_padding_bottom"
+            android:layout_height="0.5dp"/>
+
         <TextView
             android:id="@+id/text"
             android:layout_width="match_parent"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="7dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="3"
-            android:paddingLeft="@dimen/default_padding_bottom"
-            android:paddingRight="@dimen/default_padding_bottom"
+            android:paddingLeft="10dp"
+            android:paddingBottom="5dp"
+            android:paddingRight="10dp"
             android:text="text"
             android:textColor="@color/accent"
             android:textSize="14sp" />
