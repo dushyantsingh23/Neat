@@ -13,6 +13,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -51,16 +52,19 @@ public class NotesListActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(NotesListActivity.this, AddNewNoteActivity.class);
+                Intent intent = new Intent(NotesListActivity.this, AddEditNoteActivity.class);
                 startActivity(intent);
             }
         });
         mEmptyView = (TextView) findViewById(R.id.empty_view);
         mNotesDOList = new ArrayList<>();
         mAdapter = new NotesAdapter(mNotesDOList);
+        mAdapter.mList = mNotesDOList;
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        startNotesLoader(false);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -70,6 +74,12 @@ public class NotesListActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        startNotesLoader(true);
     }
 
     @Override
@@ -85,9 +95,7 @@ public class NotesListActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.nav_about) {
             Toast.makeText(this, R.string.text_about, Toast.LENGTH_SHORT).show();
         }
@@ -126,12 +134,13 @@ public class NotesListActivity extends AppCompatActivity
         if (cursor != null) {
             MicroOrm orm = new MicroOrm();
             try {
-                cursor.moveToFirst();
-                mNotesDOList.clear();
-                do {
-                    NotesDO item = orm.fromCursor(cursor, NotesDO.class);
-                    mNotesDOList.add(item);
-                } while (cursor.moveToNext());
+                if(cursor.moveToFirst()) {
+                    mNotesDOList.clear();
+                    do {
+                        NotesDO item = orm.fromCursor(cursor, NotesDO.class);
+                        mNotesDOList.add(item);
+                    } while (cursor.moveToNext());
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -172,15 +181,16 @@ public class NotesListActivity extends AppCompatActivity
             if(notesDO != null) {
                 holder.text.setText(notesDO.getText());
                 holder.title.setText(notesDO.getTitle());
+                holder.notesDO = notesDO;
             }
         }
 
         @Override
         public int getItemCount() {
-            if(mNotesDOList == null) {
+            if(mList == null) {
                 return 0;
             } else {
-                return mNotesDOList.size();
+                return mList.size();
             }
         }
     }
@@ -188,10 +198,21 @@ public class NotesListActivity extends AppCompatActivity
     private class NotesViewHolder extends RecyclerView.ViewHolder {
         private TextView title;
         private TextView text;
+        private CardView card;
+        private NotesDO notesDO;
         public NotesViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title);
             text = (TextView) itemView.findViewById(R.id.text);
+            card = (CardView) itemView.findViewById(R.id.card);
+            card.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(NotesListActivity.this, AddEditNoteActivity.class);
+                    intent.putExtra("noteDO", notesDO);
+                    startActivity(intent);
+                }
+            });
         }
     }
 

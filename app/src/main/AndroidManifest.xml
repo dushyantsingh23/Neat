@@ -20,13 +20,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.neat.activity.AddNewNoteActivity"
+            android:name=".AddEditNoteActivity"
             android:label="@string/title_add_new_notes_activity"
             android:screenOrientation="portrait" />
 
         <provider
             android:name="com.neat.provider.NeatDataContentProvider"
-            android:authorities="in.encashea.sonic.provider"
+            android:authorities="com.neat.provider"
             android:enabled="true"
             android:exported="true" />
     </application>

@@ -13,4 +13,6 @@
     <string name="text_about">Created by Dushyant</string>
     <string name="no_notes">No Notes Available</string>
     <string name="save">Save Note</string>
+    <string name="save_success">Note Saved</string>
+    <string name="save_failure">Unable to save note</string>
 </resources>

@@ -7,11 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.neat.entities.NotesDO;
 import com.neat.provider.NeatDataContentProvider;
 
-public class AddNewNoteActivity extends AppCompatActivity implements View.OnClickListener {
+public class AddEditNoteActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText mTitleEditText;
     private EditText mTextEditText;
@@ -64,6 +65,13 @@ public class AddNewNoteActivity extends AppCompatActivity implements View.OnClic
 
         @Override
         protected void onPostExecute(Boolean result) {
+            if(result) {
+                finish();
+                Toast.makeText(AddEditNoteActivity.this, R.string.save_success, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(AddEditNoteActivity.this, R.string.save_failure, Toast.LENGTH_SHORT).show();
+
+            }
         }
 
     }

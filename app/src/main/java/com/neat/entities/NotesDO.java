@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.SparseArray;
 
 import com.neat.provider.NeatDataContentProvider;
 
@@ -58,6 +59,15 @@ public class NotesDO extends BaseEntity implements BaseColumns, Parcelable{
         text = in.readString();
     }
 
+    private static final SparseArray<String> notesDetailsColumnsMap = new SparseArray<>();
+
+    static {
+        notesDetailsColumnsMap.put(0, NotesDetailsCoulumns.ID);
+        notesDetailsColumnsMap.put(1, NotesDetailsCoulumns.TITLE);
+        notesDetailsColumnsMap.put(2, NotesDetailsCoulumns.TEXT);
+        notesDetailsColumnsMap.put(3, NotesDetailsCoulumns.SOFT_DELETED);
+    }
+
     public static final Creator<NotesDO> CREATOR = new Creator<NotesDO>() {
         @Override
         public NotesDO createFromParcel(Parcel in) {
@@ -72,7 +82,16 @@ public class NotesDO extends BaseEntity implements BaseColumns, Parcelable{
 
     @Override
     public Object get(String value) {
-        return null;
+        switch (notesDetailsColumnsMap.indexOfValue(value)) {
+            case 1:
+                return title;
+            case 2:
+                return text;
+            case 3:
+                return softDeleted;
+            default:
+                return null;
+        }
     }
 
     @Override
