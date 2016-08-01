@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class NotesListActivity extends AppCompatActivity
     private RecyclerView mRecyclerView;
     private NotesAdapter mAdapter;
     private List<NotesDO> notesDOList;
+    private TextView mEmptyView;
 
     private int LOADER_ID = 1201;
     @Override
@@ -53,6 +55,7 @@ public class NotesListActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+        mEmptyView = (TextView) findViewById(R.id.empty_view);
         notesDOList = new ArrayList<>();
         mAdapter = new NotesAdapter(notesDOList);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -124,7 +127,6 @@ public class NotesListActivity extends AppCompatActivity
             MicroOrm orm = new MicroOrm();
             try {
                 cursor.moveToFirst();
-                int rows = cursor.getCount();
                 notesDOList.clear();
                 do {
                     NotesDO item = orm.fromCursor(cursor, NotesDO.class);
@@ -134,6 +136,14 @@ public class NotesListActivity extends AppCompatActivity
                 e.printStackTrace();
             }
             cursor.close();
+        }
+
+        if(notesDOList.size() > 0) {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyView.setVisibility(View.GONE);
+        } else {
+            mRecyclerView.setVisibility(View.GONE);
+            mEmptyView.setVisibility(View.VISIBLE);
         }
         mAdapter.mList = notesDOList;
         mAdapter.notifyDataSetChanged();
@@ -150,18 +160,28 @@ public class NotesListActivity extends AppCompatActivity
             mList = notes;
         }
         @Override
-        public NotesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return null;
+        public NotesViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+            View view = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.notes_view_holder, viewGroup, false);
+            return new NotesViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(NotesViewHolder holder, int position) {
-
+            NotesDO notesDO = notesDOList.get(position);
+            if(notesDO != null) {
+                holder.text.setText(notesDO.getText());
+                holder.title.setText(notesDO.getTitle());
+            }
         }
 
         @Override
         public int getItemCount() {
-            return 0;
+            if(notesDOList == null) {
+                return 0;
+            } else {
+                return notesDOList.size();
+            }
         }
     }
 
