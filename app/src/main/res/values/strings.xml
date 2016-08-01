@@ -6,4 +6,8 @@
 
     <string name="action_settings">Settings</string>
     <string name="welcome">Welcome!</string>
+    <string name="title_hint">Enter Title Here</string>
+    <string name="text_hint">Enter Note</string>
+    <string name="title_main_activity">Neat</string>
+    <string name="title_add_new_notes_activity">Add Note</string>
 </resources>
