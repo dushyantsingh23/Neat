@@ -1,9 +1,5 @@
 package com.notes.entities;
 
-/**
- * Created by Hades on 22/03/16.
- */
-
 import android.content.ContentValues;
 import android.provider.BaseColumns;
 

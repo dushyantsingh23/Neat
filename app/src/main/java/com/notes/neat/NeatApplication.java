@@ -5,9 +5,6 @@ import android.content.Context;
 
 import java.util.Locale;
 
-/**
- * Created by Hades on 15/03/16.
- */
 public class NeatApplication extends Application {
 
     private static NeatApplication sInstance;

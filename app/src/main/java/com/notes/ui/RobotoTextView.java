@@ -26,11 +26,7 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import com.notes.neat.R;
-/**
- * Implementation of a {@link TextView} with native support for all the Roboto fonts on all versions of Android.
- *
- * @author e.shishkin
- */
+
 public class RobotoTextView extends TextView {
 
 	public final static float NORMAL = 0;

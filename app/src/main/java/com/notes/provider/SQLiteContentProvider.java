@@ -1,9 +1,5 @@
 package com.notes.provider;
 
-/**
- * Created by Hades on 21/03/16.
- */
-
 import android.content.ContentProvider;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
