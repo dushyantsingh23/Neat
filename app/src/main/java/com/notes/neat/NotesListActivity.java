@@ -8,15 +8,21 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class NotesListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private RecyclerView mRecyclerView;
+    private NotesAdapter mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +38,10 @@ public class NotesListActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+        mAdapter = new NotesAdapter();
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -82,11 +92,40 @@ public class NotesListActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_about) {
-            Toast.makeText(this, "Created by DSJ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.text_about, Toast.LENGTH_SHORT).show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private class NotesAdapter extends RecyclerView.Adapter<NotesViewHolder> {
+
+        @Override
+        public NotesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return null;
+        }
+
+        @Override
+        public void onBindViewHolder(NotesViewHolder holder, int position) {
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return 0;
+        }
+    }
+
+    private class NotesViewHolder extends RecyclerView.ViewHolder {
+        private TextView title;
+        private TextView text;
+        public NotesViewHolder(View itemView) {
+            super(itemView);
+            title = (TextView) itemView.findViewById(R.id.title);
+            text = (TextView) itemView.findViewById(R.id.text);
+        }
+    }
+
 }

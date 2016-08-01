@@ -10,4 +10,5 @@
     <string name="text_hint">Enter Note</string>
     <string name="title_main_activity">Neat</string>
     <string name="title_add_new_notes_activity">Add Note</string>
+    <string name="text_about">Created by Dushyant</string>
 </resources>
