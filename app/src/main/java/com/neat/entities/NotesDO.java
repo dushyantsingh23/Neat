@@ -25,6 +25,18 @@ public class NotesDO extends BaseEntity implements BaseColumns, Parcelable{
     @Column("soft_deleted")
     private Boolean softDeleted;
 
+    public NotesDO() {
+
+    }
+
+    public Boolean getSoftDeleted() {
+        return softDeleted;
+    }
+
+    public void setSoftDeleted(Boolean softDeleted) {
+        this.softDeleted = softDeleted;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -41,7 +53,7 @@ public class NotesDO extends BaseEntity implements BaseColumns, Parcelable{
         this.text = text;
     }
 
-    protected NotesDO(Parcel in) {
+    public NotesDO(Parcel in) {
         title = in.readString();
         text = in.readString();
     }
@@ -79,6 +91,13 @@ public class NotesDO extends BaseEntity implements BaseColumns, Parcelable{
         public static final String TITLE = "title";
         public static final String TEXT = "text";
         public static final String SOFT_DELETED = "soft_deleted";
+
+        public static final String[] NotesColumnNames = {
+                ID,
+                TITLE,
+                TEXT,
+                SOFT_DELETED
+        };
     }
 
     public static final String CREATE_TABLE = " ( " +

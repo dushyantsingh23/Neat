@@ -36,7 +36,7 @@ public class NotesListActivity extends AppCompatActivity
 
     private RecyclerView mRecyclerView;
     private NotesAdapter mAdapter;
-    private List<NotesDO> notesDOList;
+    private List<NotesDO> mNotesDOList;
     private TextView mEmptyView;
 
     private int LOADER_ID = 1201;
@@ -56,8 +56,8 @@ public class NotesListActivity extends AppCompatActivity
             }
         });
         mEmptyView = (TextView) findViewById(R.id.empty_view);
-        notesDOList = new ArrayList<>();
-        mAdapter = new NotesAdapter(notesDOList);
+        mNotesDOList = new ArrayList<>();
+        mAdapter = new NotesAdapter(mNotesDOList);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -127,10 +127,10 @@ public class NotesListActivity extends AppCompatActivity
             MicroOrm orm = new MicroOrm();
             try {
                 cursor.moveToFirst();
-                notesDOList.clear();
+                mNotesDOList.clear();
                 do {
                     NotesDO item = orm.fromCursor(cursor, NotesDO.class);
-                    notesDOList.add(item);
+                    mNotesDOList.add(item);
                 } while (cursor.moveToNext());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -138,14 +138,14 @@ public class NotesListActivity extends AppCompatActivity
             cursor.close();
         }
 
-        if(notesDOList.size() > 0) {
+        if(mNotesDOList.size() > 0) {
             mRecyclerView.setVisibility(View.VISIBLE);
             mEmptyView.setVisibility(View.GONE);
         } else {
             mRecyclerView.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
         }
-        mAdapter.mList = notesDOList;
+        mAdapter.mList = mNotesDOList;
         mAdapter.notifyDataSetChanged();
     }
 
@@ -168,7 +168,7 @@ public class NotesListActivity extends AppCompatActivity
 
         @Override
         public void onBindViewHolder(NotesViewHolder holder, int position) {
-            NotesDO notesDO = notesDOList.get(position);
+            NotesDO notesDO = mNotesDOList.get(position);
             if(notesDO != null) {
                 holder.text.setText(notesDO.getText());
                 holder.title.setText(notesDO.getTitle());
@@ -177,10 +177,10 @@ public class NotesListActivity extends AppCompatActivity
 
         @Override
         public int getItemCount() {
-            if(notesDOList == null) {
+            if(mNotesDOList == null) {
                 return 0;
             } else {
-                return notesDOList.size();
+                return mNotesDOList.size();
             }
         }
     }
