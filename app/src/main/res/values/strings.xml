@@ -4,7 +4,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="delete">Delete note</string>
     <string name="welcome">Welcome!</string>
     <string name="title_hint">Enter Title Here</string>
     <string name="text_hint">Enter Note</string>
@@ -15,4 +15,6 @@
     <string name="save">Save Note</string>
     <string name="save_success">Note Saved</string>
     <string name="save_failure">Unable to save note</string>
+    <string name="note_delted">Note delted successfully</string>
+    <string name="note_discarded">Note discarded</string>
 </resources>

@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,6 +39,36 @@ public class AddEditNoteActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.notes_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.delete_note) {
+            if(mNoteDO.getId() != null) {
+                String selection = NotesDO.TABLE_NAME + "." + NotesDO.NotesDetailsCoulumns.ID + " = ? ";
+                String selArgs[] = new String[]{
+                        mNoteDO.getId() + ""
+                };
+                int row = getContentResolver().delete(NeatDataContentProvider.NOTES_URI, selection, selArgs);
+                finish();
+                Toast.makeText(AddEditNoteActivity.this, R.string.note_delted, Toast.LENGTH_SHORT).show();
+            } else {
+                finish();
+                Toast.makeText(AddEditNoteActivity.this, R.string.note_discarded, Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -67,7 +99,7 @@ public class AddEditNoteActivity extends BaseActivity implements View.OnClickLis
                 ContentValues contentValues = note.getContenValues(NotesDO.NotesDetailsCoulumns.NotesColumnNames);
                 if (note.getId() != null) {
                     String selection = NotesDO.TABLE_NAME + "." + NotesDO.NotesDetailsCoulumns.ID + " = ? ";
-                    String selArgs[] = new String[] {
+                    String selArgs[] = new String[]{
                             note.getId() + ""
                     };
                     getBaseContext().getContentResolver().update(NeatDataContentProvider.NOTES_URI, contentValues, selection, selArgs);
