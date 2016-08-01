@@ -1,4 +1,4 @@
-package com.notes.ui;
+package com.neat.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,8 +13,8 @@ import android.text.method.ArrowKeyMovementMethod;
 import android.text.method.MovementMethod;
 import android.util.AttributeSet;
 
-import com.notes.neat.NeatApplication;
-import com.notes.neat.R;
+import com.neat.activity.NeatApplication;
+import com.neat.activity.R;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 public class RobotoEditText extends MaterialEditText {

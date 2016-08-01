@@ -1,4 +1,4 @@
-package com.notes.provider;
+package com.neat.provider;
 
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -13,21 +13,25 @@ import android.net.Uri;
 import android.os.Binder;
 import android.support.annotation.Nullable;
 
-import com.mikepenz.iconics.utils.Utils;
-import com.notes.entities.BaseColumns;
+import com.neat.entities.BaseColumns;
+import com.neat.entities.NotesDO;
 
 
 public class NeatDataContentProvider extends SQLiteContentProvider {
 
-    public static final String CONTENT_AUTHORITY = "in.encashea.sonic.provider";
+    public static final String CONTENT_AUTHORITY = "com.neat.provider";
     private static final String URI_FORMAT = "content://" + CONTENT_AUTHORITY + "/%s";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
+    public static final Uri NOTES_URI = NotesDO.CONTENT_URI;
+
     private Context mContext;
     private static final UriMatcher uriMatcher;
+    private static final int NOTES_MATCH = 4201;
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+        uriMatcher.addURI(CONTENT_AUTHORITY, NotesDO.TABLE_NAME, NOTES_MATCH);
     }
 
     @Override
@@ -50,6 +54,11 @@ public class NeatDataContentProvider extends SQLiteContentProvider {
         int conflictAlgorithm;
 
         switch (uriMatcher.match(uri)) {
+            case NOTES_MATCH:
+                uriToSend = NOTES_URI;
+                tableName = NotesDO.TABLE_NAME;
+                conflictAlgorithm = SQLiteDatabase.CONFLICT_REPLACE;
+                break;
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
         }
@@ -90,7 +99,10 @@ public class NeatDataContentProvider extends SQLiteContentProvider {
         String tableName;
 
         switch (uriMatcher.match(uri)) {
-
+            case NOTES_MATCH:
+                tableName = NotesDO.TABLE_NAME;
+                selectionLocal = selection;
+                break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }
@@ -111,7 +123,9 @@ public class NeatDataContentProvider extends SQLiteContentProvider {
         StringBuilder sb;
         String groupBy = null;
         switch (uriMatcher.match(uri)) {
-
+            case NOTES_MATCH:
+            sqlBuilder.setTables(NotesDO.TABLE_NAME);
+            break;
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
 
@@ -126,7 +140,8 @@ public class NeatDataContentProvider extends SQLiteContentProvider {
     @Override
     public String getType(Uri uri) {
         switch (uriMatcher.match(uri)) {
-
+            case NOTES_MATCH:
+                return NotesDO.CONTENT_TYPE;
             default:
                 throw new IllegalArgumentException("Unsupported URI: " + uri);
         }
@@ -136,6 +151,7 @@ public class NeatDataContentProvider extends SQLiteContentProvider {
     public int bulkInsert(Uri uri, ContentValues[] values) {
         SQLiteDatabase db = getDatabaseHelper().getWritableDatabase();
         switch (uriMatcher.match(uri)) {
+            case NOTES_MATCH:
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);

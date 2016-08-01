@@ -1,4 +1,4 @@
-package com.notes.provider;
+package com.neat.provider;
 
 import android.content.ContentProvider;
 import android.content.ContentProviderOperation;

@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package com.notes.ui;
+package com.neat.ui;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -25,7 +25,7 @@ import android.text.style.ScaleXSpan;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import com.notes.neat.R;
+import com.neat.activity.R;
 
 public class RobotoTextView extends TextView {
 

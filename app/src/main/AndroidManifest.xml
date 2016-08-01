@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.notes.neat">
+    package="com.neat.activity">
 
     <application
         android:allowBackup="true"
@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".NotesListActivity"
+            android:name="com.neat.activity.NotesListActivity"
             android:label="@string/title_main_activity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -20,9 +20,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddNewNoteActivity"
+            android:name="com.neat.activity.AddNewNoteActivity"
             android:label="@string/title_add_new_notes_activity"
             android:screenOrientation="portrait" />
+
+        <provider
+            android:name="com.neat.provider.NeatDataContentProvider"
+            android:authorities="in.encashea.sonic.provider"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>

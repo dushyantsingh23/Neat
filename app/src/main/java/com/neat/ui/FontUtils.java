@@ -1,4 +1,4 @@
-package com.notes.ui;
+package com.neat.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -15,7 +15,7 @@ import android.text.style.StyleSpan;
 import android.util.SparseArray;
 import android.view.View;
 
-import com.notes.neat.NeatApplication;
+import com.neat.activity.NeatApplication;
 
 import java.text.Normalizer;
 import java.util.Locale;

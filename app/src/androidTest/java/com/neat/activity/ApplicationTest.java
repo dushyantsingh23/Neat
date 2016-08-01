@@ -1,4 +1,4 @@
-package com.notes.neat;
+package com.neat.activity;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

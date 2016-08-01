@@ -1,4 +1,4 @@
-package com.notes.entities;
+package com.neat.entities;
 
 import android.content.ContentValues;
 import android.provider.BaseColumns;
